@@ -189,6 +189,7 @@
 				'ws-chat',
 				'treasury',
 				'market',
+				'profile'
 			];
 
 			// Scripte laden (nacheinander)

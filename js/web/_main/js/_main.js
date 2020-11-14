@@ -671,6 +671,7 @@ const FoEproxy = (function () {
 		if (!MainGrid) return; // getEntities wurde in einer fremden Stadt ausgelöst => ActiveMap nicht ändern
 
 		LastMapPlayerID = ExtPlayerID;
+		Profile.Close();
 
 		MainParser.CityMapData = Object.assign({}, ...data.responseData.map((x) => ({ [x.id]: x })));;
 
@@ -689,8 +690,21 @@ const FoEproxy = (function () {
 	FoEproxy.addHandler('OtherPlayerService', 'visitPlayer', (data, postData) => {
 		LastMapPlayerID = data.responseData['other_player']['player_id'];
 		MainParser.OtherPlayerCityMapData = Object.assign({}, ...data.responseData['city_map']['entities'].map((x) => ({ [x.id]: x })));
+		/* if (Settings.GetSetting('ShowProfiles')) */ Profile.Show(data.responseData);
 	});
 
+	// Besuch des eigenen Profils
+	FoEproxy.addHandler('AchievementsService', 'getOverview', (data, postData) => {
+		console.log(data)
+		console.log(postData)
+	});
+
+	// Besuch des eigenen Profils
+	FoEproxy.addHandler('AchievementsService', 'setTopAchievements', (data, postData) => {
+		console.log(data)
+		console.log(postData)
+		Profile.Close();
+	});
 
 	FoEproxy.addHandler('CityMapService', (data, postData) => {
 		if (data.requestMethod === 'moveEntity' || data.requestMethod === 'moveEntities' || data.requestMethod === 'updateEntity') {
